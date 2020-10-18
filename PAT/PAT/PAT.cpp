@@ -3,9 +3,99 @@
 #include "pch.h"
 #include <iostream>
 #include<stdio.h>
+#include<list>
+#include <iomanip> 
 using namespace std;
+
+class Polynomial {
+public:
+	Polynomial(int ordernumber=0, float number=0) {
+		this->ordernumber = ordernumber;
+		this->number = number;
+	}  
+
+	int ordernumber;
+	float number;
+};
 int main()
 {
+	int a = 0;
+	while (cin >> a)
+	{
+
+		Polynomial num1[10000];
+		for (int num = 0; num < a; num++)
+		{
+			bool find = false;
+			int k = 0;
+			float n = 0;
+			cin >> k;
+			cin >> n;
+			for (int num2 = 0; num2 < a; num2++)
+			{
+				if (num1[num2].ordernumber == k) {
+					num1[num2].number += n;
+					find = true;
+				}//注意重复
+			}
+			if(!find)
+			num1[num] = Polynomial(k, n);
+		}
+		int b = 0;
+		cin >> b;
+		for (int num = 0; num < b; num++)
+		{
+			bool find = false;
+			int k = 0;
+			float n = 0;
+			cin >> k;
+			cin >> n;
+			for (int num2 = 0; num2 < a; num2++)
+			{
+				if (num1[num2].ordernumber == k) {
+					num1[num2].number += n;
+					find = true;
+				}
+			}
+			if (!find)
+				num1[a++] = Polynomial(k, n);
+
+
+		}
+		for (int num2 = 0; num2 < a; num2++)
+			for (int num3 = num2; num3 < a; num3++) {
+				if (num1[num2].ordernumber < num1[num3].ordernumber) {
+					float k;
+					int n;
+					k = num1[num2].number;
+					n = num1[num2].ordernumber;
+					num1[num2].number = num1[num3].number;
+					num1[num2].ordernumber = num1[num3].ordernumber;
+					num1[num3].number = k;
+					num1[num3].ordernumber = n;
+				}
+			}
+		bool iszero = false;
+		int minus = 0;
+		for (int num2 = 0; num2 < a; num2++) {
+			num1[num2 - minus] = num1[num2];
+			if (num1[num2].number == 0)
+				minus++;
+		}//注意清楚为0的项数
+		a -= minus;
+		if (a == 0)
+			cout << a<<endl;
+		else
+		cout << a << " ";
+		for (int num2 = 0; num2 < a; num2++) {
+			
+			if (num2 != a - 1)
+				cout << num1[num2].ordernumber << " " << fixed << setprecision(1) << num1[num2].number << " ";
+			else
+				cout << num1[num2].ordernumber << " " << fixed << setprecision(1) << num1[num2].number<<endl;
+			//注意保留一位小数
+		}
+	}
 
 
 }
